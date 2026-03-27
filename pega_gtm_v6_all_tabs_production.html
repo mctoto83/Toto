@@ -1,0 +1,778 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#001A4E;--navy2:#0A2B6B;
+  --teal:#00A88E;--teal2:#007A68;--teal3:#E0F5F2;
+  --blue:#1564C0;--blue2:#EBF2FC;
+  --violet:#5C3FA0;--violet2:#EEE9FA;
+  --amber:#C97A00;--amber2:#FFF2DC;
+  --red:#B53126;--red2:#FDECEA;
+  --green:#1A7A47;--green2:#E6F4ED;
+  --slate:#F0F2F5;--slate2:#E4E7EC;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.13);
+  --txt:#0D1B2A;--txt2:#4A5568;--txt3:#8A96A3;
+}
+body{font-family:var(--font-sans);background:var(--slate);}
+.shell{display:flex;min-height:620px;}
+
+/* SIDEBAR */
+.sidebar{width:170px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;transition:width 0.2s;}
+.sidebar.col{width:44px;}
+.sb-brand{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:8px;min-height:44px;}
+.sb-pm{width:24px;height:24px;border-radius:5px;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.sb-an{font-size:11px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;}
+.sb-an small{display:block;font-size:9px;color:rgba(255,255,255,0.4);font-weight:400;}
+.sb-coll{margin-left:auto;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.3);padding:2px;flex-shrink:0;}
+.sb-coll:hover{color:rgba(255,255,255,0.7);}
+.sb-sec{padding:9px 10px 3px;font-size:9px;font-weight:500;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.07em;white-space:nowrap;overflow:hidden;}
+.sidebar.col .sb-sec,.sidebar.col .sb-an{display:none;}
+.sb-nav{padding:0 6px;flex:1;}
+.sbi{display:flex;align-items:center;gap:7px;padding:7px 6px;border-radius:5px;font-size:11px;color:rgba(255,255,255,0.55);cursor:pointer;transition:all 0.12s;margin-bottom:2px;border:none;background:transparent;width:100%;text-align:left;white-space:nowrap;overflow:hidden;}
+.sbi:hover{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.9);}
+.sbi.on{background:rgba(0,168,142,0.18);color:#fff;}
+.sbi.on .sic{color:var(--teal);opacity:1;}
+.sic{width:14px;height:14px;flex-shrink:0;opacity:0.6;}
+.slbl{flex:1;overflow:hidden;text-overflow:ellipsis;}
+.sidebar.col .slbl{display:none;}
+.sbdg{background:var(--teal);color:#fff;font-size:9px;font-weight:600;padding:1px 5px;border-radius:10px;flex-shrink:0;}
+.sidebar.col .sbdg{display:none;}
+.sb-user{padding:9px 10px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:7px;}
+.sb-av{width:24px;height:24px;border-radius:50%;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;}
+.sb-ui{overflow:hidden;}
+.sb-un{font-size:11px;font-weight:500;color:rgba(255,255,255,0.85);white-space:nowrap;}
+.sb-ur{font-size:9px;color:rgba(255,255,255,0.35);white-space:nowrap;}
+.sidebar.col .sb-ui{display:none;}
+
+/* MAIN */
+.main-area{flex:1;display:flex;flex-direction:column;min-width:0;}
+.topbar{background:#fff;border-bottom:0.5px solid var(--border2);height:44px;display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;position:relative;}
+.tb-bc{font-size:11px;color:var(--txt3);flex:1;}
+.tb-bc span{color:var(--txt2);}
+.tb-bc strong{color:var(--txt);font-weight:500;}
+.sw{position:relative;width:200px;}
+.si{width:100%;height:28px;padding:0 9px 0 26px;border:0.5px solid var(--border2);border-radius:5px;font-size:11px;color:var(--txt);background:var(--slate);outline:none;transition:all 0.15s;}
+.si:focus{background:#fff;border-color:var(--teal);}
+.sico{position:absolute;left:7px;top:50%;transform:translateY(-50%);}
+.tb-sync{font-size:10px;color:var(--txt3);display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.ldot{width:6px;height:6px;border-radius:50%;background:#22C87A;animation:lp 2s infinite;}
+@keyframes lp{0%,100%{box-shadow:0 0 0 0 rgba(34,200,122,0.4);}50%{box-shadow:0 0 0 3px rgba(34,200,122,0);}}
+.nb{position:relative;width:28px;height:28px;border:0.5px solid var(--border2);border-radius:5px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt2);transition:all 0.12s;}
+.nb:hover{background:var(--slate);}
+.nc{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:8px;font-weight:600;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff;}
+.np{position:absolute;top:44px;right:0;width:290px;background:#fff;border:0.5px solid var(--border2);border-radius:0 0 8px 8px;box-shadow:0 8px 20px rgba(0,0,0,0.1);z-index:200;display:none;}
+.np.open{display:block;}
+.nph{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:0.5px solid var(--border);}
+.npt{font-size:12px;font-weight:500;color:var(--txt);}
+.npc{font-size:10px;color:var(--teal2);cursor:pointer;background:none;border:none;}
+.ni{display:flex;gap:8px;padding:9px 12px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.1s;}
+.ni:last-child{border-bottom:none;}
+.ni.unread{background:#F7FFFE;}
+.ni:hover{background:var(--slate);}
+.nid{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.nib{flex:1;}
+.nit{font-size:11px;font-weight:500;color:var(--txt);margin-bottom:1px;}
+.nid2{font-size:10px;color:var(--txt2);line-height:1.4;}
+.nits{font-size:9px;color:var(--txt3);margin-top:2px;}
+.niud{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:4px;}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap;}
+.bg{background:var(--green2);color:var(--green);}
+.ba{background:var(--amber2);color:var(--amber);}
+.bb{background:var(--blue2);color:var(--blue);}
+.bv{background:var(--violet2);color:var(--violet);}
+.br{background:var(--red2);color:var(--red);}
+.bn{background:#E8EDF5;color:var(--navy);}
+.bt{background:var(--teal3);color:var(--teal2);}
+
+.content{flex:1;overflow-y:auto;padding:14px 16px;}
+.page{display:none;}
+.page.on{display:block;}
+
+/* ── PIPELINE PAGE ── */
+.pip-krow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px;}
+.kc{background:#fff;border:0.5px solid var(--border);border-radius:7px;padding:11px 13px;}
+.kc-l{font-size:10px;color:var(--txt3);margin-bottom:2px;}
+.kc-v{font-size:20px;font-weight:500;color:var(--txt);}
+.kc-d{font-size:10px;margin-top:1px;}
+.up{color:var(--green);}.warn{color:var(--amber);}.dn{color:var(--red);}
+
+.pip-body{display:grid;grid-template-columns:1fr 320px;gap:12px;align-items:start;}
+.pip-left{display:flex;flex-direction:column;gap:12px;}
+
+/* FUNNEL */
+.funnel-card{background:#fff;border:0.5px solid var(--border);border-radius:7px;padding:13px;}
+.funnel-title{font-size:12px;font-weight:500;color:var(--txt);margin-bottom:12px;}
+.funnel-stages{display:flex;flex-direction:column;gap:6px;}
+.funnel-stage{display:flex;align-items:center;gap:10px;}
+.fs-label{font-size:10px;font-weight:500;color:var(--txt2);width:90px;flex-shrink:0;}
+.fs-bar-wrap{flex:1;height:22px;background:var(--slate);border-radius:4px;overflow:hidden;position:relative;}
+.fs-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;transition:width 0.4s;}
+.fs-bar-lbl{font-size:10px;font-weight:500;color:#fff;white-space:nowrap;}
+.fs-meta{width:80px;text-align:right;flex-shrink:0;}
+.fs-acv{font-size:11px;font-weight:500;color:var(--txt);}
+.fs-n{font-size:9px;color:var(--txt3);}
+
+/* FILTER + TABLE */
+.fbar{display:flex;align-items:center;gap:6px;margin-bottom:9px;flex-wrap:wrap;}
+.fc{display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:5px;font-size:10px;font-weight:500;border:0.5px solid var(--border2);background:#fff;color:var(--txt2);cursor:pointer;transition:all 0.12s;}
+.fc:hover{border-color:var(--teal);color:var(--teal2);}
+.fc.active{background:var(--teal3);border-color:var(--teal);color:var(--teal2);}
+.fsep{width:1px;height:16px;background:var(--border2);}
+.rc{font-size:10px;color:var(--txt3);margin-left:auto;}
+.tbl-card{background:#fff;border:0.5px solid var(--border);border-radius:7px;overflow:hidden;}
+.tbl-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:0.5px solid var(--border);}
+.tbl-t{font-size:12px;font-weight:500;color:var(--txt);}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:9px;font-weight:500;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;padding:7px 10px;background:#FAFBFC;border-bottom:0.5px solid var(--border);text-align:left;cursor:pointer;user-select:none;white-space:nowrap;}
+.tbl th:hover{color:var(--txt2);}
+.si-ind{font-size:9px;margin-left:2px;color:var(--teal);}
+.tbl td{padding:9px 10px;font-size:11px;color:var(--txt);border-bottom:0.5px solid var(--border);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tbody tr{cursor:pointer;transition:background 0.1s;}
+.tbl tbody tr:hover td{background:#F7F9FC;}
+.tbl tbody tr.sel td{background:#EBF9F6;}
+.acct-n{font-size:11px;font-weight:500;color:var(--txt);}
+.acct-s{font-size:9px;color:var(--txt3);margin-top:1px;}
+.pb{display:flex;align-items:center;gap:5px;}
+.pb-b{width:44px;height:3px;background:var(--slate2);border-radius:2px;overflow:hidden;}
+.pb-f{height:100%;border-radius:2px;}
+.pb-n{font-size:10px;font-weight:500;}
+.vsc{background:var(--red2);border:0.5px solid #F5B8B5;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:500;color:var(--red);}
+.chip{font-size:9px;padding:1px 5px;background:var(--slate);border:0.5px solid var(--border2);border-radius:3px;color:var(--txt2);}
+.no-res{padding:20px;text-align:center;font-size:11px;color:var(--txt3);}
+
+/* PIPELINE SIDE PANEL */
+.pip-side{background:#fff;border:0.5px solid var(--border);border-radius:7px;overflow:hidden;position:sticky;top:0;}
+.ps-hdr{background:var(--navy);padding:11px 13px;}
+.ps-acct{font-size:13px;font-weight:500;color:#fff;}
+.ps-sub{font-size:10px;color:rgba(255,255,255,0.55);margin-top:3px;}
+.ps-body{padding:12px 13px;}
+.ps-sec{margin-bottom:11px;}
+.ps-t{font-size:9px;font-weight:500;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.ps-krow{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.ps-k{background:var(--slate);border-radius:5px;padding:7px 9px;}
+.ps-kl{font-size:9px;color:var(--txt3);margin-bottom:2px;}
+.ps-kv{font-size:13px;font-weight:500;color:var(--txt);}
+.ps-kv.teal{color:var(--teal2);}
+.ps-kv.red{color:var(--red);}
+.ps-kv.green{color:var(--green);}
+.play-box{background:var(--teal3);border-left:3px solid var(--teal);border-radius:0 5px 5px 0;padding:8px 10px;font-size:11px;color:#004D43;line-height:1.6;}
+.committee{display:flex;flex-direction:column;gap:4px;}
+.cmem{display:flex;align-items:center;gap:7px;padding:5px 8px;background:var(--slate);border-radius:4px;}
+.cmem-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.cmem-n{font-size:10px;font-weight:500;color:var(--txt);flex:1;}
+.cmem-r{font-size:9px;color:var(--txt3);}
+.cmem-st{font-size:9px;font-weight:500;}
+.steps-list{display:flex;flex-direction:column;gap:4px;}
+.step-i{display:flex;align-items:flex-start;gap:7px;padding:6px 8px;background:var(--slate);border-radius:4px;}
+.step-num{width:16px;height:16px;border-radius:50%;background:var(--navy);color:#fff;font-size:8px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-a{font-size:10px;font-weight:500;color:var(--txt);flex:1;}
+.step-d{font-size:9px;color:var(--txt3);}
+.step-ck{width:14px;height:14px;border:0.5px solid var(--border2);border-radius:3px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.12s;}
+.step-ck:hover{border-color:var(--teal);}
+.step-ck.done{background:var(--teal);border-color:var(--teal);}
+.ps-actrow{display:flex;gap:6px;margin-top:10px;}
+.btn{padding:6px 11px;border-radius:5px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid var(--border2);background:#fff;color:var(--txt);transition:all 0.12s;}
+.btn:hover{background:var(--slate);}
+.btn-t{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn-t:hover{background:var(--teal2);color:#fff;}
+.btn-n{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-n:hover{background:var(--navy2);color:#fff;}
+.btn-r{border-color:var(--red);color:var(--red);}
+.btn-r:hover{background:var(--red2);}
+.btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* ── DEAL INTELLIGENCE ── */
+.two-col{display:flex;gap:12px;align-items:flex-start;}
+.col-l{flex:1;min-width:0;}
+.col-r{flex:1.45;min-width:0;}
+.nba-i{background:#fff;border:0.5px solid var(--border);border-radius:7px;padding:11px;margin-bottom:8px;cursor:pointer;transition:all 0.12s;}
+.nba-i:hover{border-color:rgba(0,168,142,0.35);}
+.nba-i.sel{border:1.5px solid var(--teal);background:#F0FCF9;}
+.nba-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
+.nba-n{font-size:12px;font-weight:500;color:var(--txt);}
+.nba-s{font-size:10px;color:var(--txt3);margin-top:1px;}
+.nba-p{display:flex;align-items:center;gap:5px;margin:5px 0;}
+.nba-bar{flex:1;height:3px;background:var(--slate2);border-radius:2px;overflow:hidden;}
+.nba-f{height:100%;border-radius:2px;}
+.nba-pct{font-size:10px;font-weight:500;}
+.nba-chips{display:flex;flex-wrap:wrap;gap:3px;}
+.det-card{background:#fff;border:0.5px solid var(--border);border-radius:7px;overflow:hidden;}
+.det-hdr{background:var(--navy);padding:13px 15px;}
+.det-acct{font-size:14px;font-weight:500;color:#fff;}
+.det-meta-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.dm{font-size:9px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.65);padding:2px 7px;border-radius:10px;}
+.dm.hl{background:rgba(0,168,142,0.3);color:#7FE8D8;}
+.dm.warn{background:rgba(201,122,0,0.3);color:#FFD280;}
+.acct-strip{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:0.5px solid var(--border);}
+.as-i{padding:7px 12px;border-right:0.5px solid var(--border);}
+.as-i:last-child{border-right:none;}
+.as-l{font-size:9px;color:var(--txt3);margin-bottom:2px;text-transform:uppercase;letter-spacing:0.04em;}
+.as-v{font-size:11px;font-weight:500;color:var(--txt);}
+.as-v.teal{color:var(--teal2);}
+.as-v.red{color:var(--red);}
+.det-body{padding:12px 15px;}
+.sec{margin-bottom:12px;}
+.sec-t{font-size:9px;font-weight:500;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.sec-t-line{flex:1;height:0.5px;background:var(--border);}
+.play-box2{background:var(--teal3);border-left:3px solid var(--teal);border-radius:0 5px 5px 0;padding:8px 11px;font-size:11px;color:#004D43;line-height:1.6;}
+.det-committee{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.dc{background:var(--slate);border-radius:5px;padding:7px 9px;}
+.dc-role{font-size:8px;color:var(--txt3);margin-bottom:1px;text-transform:uppercase;letter-spacing:0.04em;}
+.dc-name{font-size:10px;font-weight:500;color:var(--txt);margin-bottom:3px;}
+.dc-st{display:flex;align-items:center;gap:3px;font-size:9px;}
+.dc-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.dr-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:0.5px solid var(--border);border-radius:5px;overflow:hidden;}
+.dr{padding:6px 9px;background:#fff;}
+.dr-l{font-size:9px;color:var(--txt3);margin-bottom:1px;}
+.dr-v{font-size:11px;font-weight:500;color:var(--txt);}
+.dr-vg{font-size:11px;font-weight:500;color:var(--green);}
+.dr-va{font-size:11px;font-weight:500;color:var(--amber);}
+.dr-vr{font-size:11px;font-weight:500;color:var(--red);}
+.det-steps{display:flex;flex-direction:column;gap:4px;}
+.ds-i{display:flex;align-items:flex-start;gap:7px;padding:6px 8px;background:var(--slate);border-radius:4px;}
+.ds-num{width:16px;height:16px;border-radius:50%;background:var(--navy);color:#fff;font-size:8px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ds-b{flex:1;}
+.ds-a{font-size:10px;font-weight:500;color:var(--txt);}
+.ds-d{font-size:9px;color:var(--txt3);}
+.ds-ck{width:14px;height:14px;border:0.5px solid var(--border2);border-radius:3px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.12s;}
+.ds-ck:hover{border-color:var(--teal);}
+.ds-ck.done{background:var(--teal);border-color:var(--teal);}
+.memo-wrap{background:#FAFBFC;border:0.5px solid var(--border);border-radius:5px;overflow:hidden;}
+.memo-tb{display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:0.5px solid var(--border);background:#fff;flex-wrap:wrap;}
+.memo-tb-l{display:flex;align-items:center;gap:5px;flex:1;}
+.memo-tb-title{font-size:10px;font-weight:500;color:var(--txt2);}
+.ai-badge{font-size:8px;background:var(--violet2);color:var(--violet);padding:1px 5px;border-radius:3px;font-weight:500;}
+.edit-badge{font-size:8px;background:var(--amber2);color:var(--amber);padding:1px 5px;border-radius:3px;font-weight:500;display:none;}
+.memo-ts{font-size:9px;color:var(--txt3);}
+.memo-tb-r{display:flex;align-items:center;gap:5px;}
+.tbtn{padding:4px 8px;border-radius:4px;font-size:10px;font-weight:500;cursor:pointer;border:0.5px solid var(--border2);background:#fff;color:var(--txt2);transition:all 0.12s;display:flex;align-items:center;gap:3px;}
+.tbtn:hover{background:var(--slate);}
+.tbtn.ea{background:var(--amber2);border-color:var(--amber);color:var(--amber);}
+.tbtn.tl{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tbtn.tl:hover{background:var(--teal2);}
+.memo-body{padding:12px;font-size:11px;color:var(--txt2);line-height:1.7;}
+.memo-sec{margin-bottom:8px;}
+.memo-sec:last-child{margin-bottom:0;}
+.memo-sec strong{color:var(--txt);font-weight:500;}
+.memo-edit-area{width:100%;min-height:180px;padding:12px;font-size:11px;color:var(--txt);line-height:1.7;border:none;outline:none;background:#FFFDF5;resize:vertical;font-family:var(--font-sans);}
+.edit-hint{padding:5px 10px;background:var(--amber2);font-size:9px;color:var(--amber);display:flex;align-items:center;gap:4px;border-top:0.5px solid rgba(201,122,0,0.2);}
+.save-bar{display:flex;align-items:center;gap:6px;padding:6px 10px;border-top:0.5px solid var(--border);background:#fff;}
+.save-info{font-size:9px;color:var(--txt3);flex:1;}
+.conf-row{display:flex;align-items:center;gap:7px;padding:6px 10px;background:var(--green2);font-size:10px;color:var(--green);}
+.conf-bg{flex:1;height:3px;background:#B8DDCA;border-radius:2px;overflow:hidden;}
+.conf-fg{height:100%;border-radius:2px;background:var(--green);}
+.audit-trail{display:flex;flex-direction:column;gap:0;}
+.at-i{display:flex;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--border);font-size:10px;}
+.at-i:last-child{border-bottom:none;}
+.at-d{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.at-t{flex:1;color:var(--txt2);}
+.at-t strong{color:var(--txt);font-weight:500;}
+.at-ts{color:var(--txt3);}
+.actrow{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+
+/* ── IMPACT DASHBOARD ── */
+.imp-krow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px;}
+.imp-kc{background:#fff;border:0.5px solid var(--border);border-radius:7px;padding:11px 13px;}
+.imp-kl{font-size:10px;color:var(--txt3);margin-bottom:2px;}
+.imp-kv{font-size:22px;font-weight:500;color:var(--txt);}
+.imp-kd{font-size:10px;margin-top:1px;}
+.imp-body{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.imp-card{background:#fff;border:0.5px solid var(--border);border-radius:7px;padding:13px;}
+.imp-ct{font-size:12px;font-weight:500;color:var(--txt);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.imp-ct-r{font-size:10px;font-weight:400;color:var(--txt3);}
+.chart-wrap{position:relative;width:100%;height:130px;}
+.chart-wrap-sm{position:relative;width:100%;height:100px;}
+.tgt-row{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:10px;}
+.tgt-lbl{color:var(--txt3);flex:1;}
+.tgt-val{font-weight:500;color:var(--green);}
+.prog-bg{flex:1;height:4px;background:var(--slate2);border-radius:2px;overflow:hidden;}
+.prog-fg{height:100%;border-radius:2px;}
+
+/* AGENT PERF */
+.agent-perf{background:#fff;border:0.5px solid var(--border);border-radius:7px;padding:13px;margin-bottom:12px;}
+.ap-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px;}
+.ap-cell{text-align:center;padding:10px 8px;background:var(--slate);border-radius:6px;}
+.ap-val{font-size:20px;font-weight:500;color:var(--txt);}
+.ap-lbl{font-size:9px;color:var(--txt3);margin-top:3px;}
+.ap-sub{font-size:9px;margin-top:2px;}
+
+/* BREAKDOWN TABLE */
+.bk-tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.bk-tbl th{font-size:9px;font-weight:500;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;padding:6px 10px;border-bottom:0.5px solid var(--border);text-align:left;}
+.bk-tbl td{padding:8px 10px;border-bottom:0.5px solid var(--border);color:var(--txt);}
+.bk-tbl tr:last-child td{border-bottom:none;}
+.bk-tbl tr:hover td{background:var(--slate);}
+
+/* ALERTS */
+.af{background:#fff;border:0.5px solid var(--border);border-radius:7px;overflow:hidden;}
+.af-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:0.5px solid var(--border);}
+.af-t{font-size:12px;font-weight:500;color:var(--txt);}
+.af-item{display:flex;gap:10px;padding:11px 12px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.1s;}
+.af-item:hover{background:var(--slate);}
+.af-item:last-child{border-bottom:none;}
+.af-item.unread{background:#F5FFFE;}
+.af-ic{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.af-body{flex:1;}
+.af-tt{font-size:11px;font-weight:500;color:var(--txt);margin-bottom:2px;}
+.af-d{font-size:10px;color:var(--txt2);line-height:1.4;}
+.af-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+.af-ts{font-size:9px;color:var(--txt3);}
+.af-ud{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:4px;}
+
+.pls{width:7px;height:7px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:3px;}
+.pd{background:var(--teal);}
+.pr{background:var(--amber);animation:ba 1.2s infinite;}
+.pw{background:#C9CDD4;}
+@keyframes ba{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.footer{border-top:0.5px solid var(--border);padding:7px 16px;background:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.ft-l{font-size:10px;color:var(--txt3);}
+.ft-r{font-size:10px;color:var(--teal2);font-weight:500;}
+</style>
+
+<div>
+<div class="shell" id="shell">
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-pm"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4.02 1.5 1.5 4.02 1.5 7S4.02 12.5 7 12.5 12.5 9.98 12.5 7 9.98 1.5 7 1.5zm0 9.5C4.79 11 3 9.21 3 7s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="white" opacity="0.8"/><path d="M5 7l1.5 1.5L9.5 5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="sb-an">GTM Engine<small>Pega Infinity '25</small></div>
+    <button class="sb-coll" onclick="toggleSB()"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 2L4 6l4 4"/></svg></button>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-sec">Workspace</div>
+    <button class="sbi on" onclick="showPage('pipeline')"><svg class="sic" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="12" height="3" rx="1"/><rect x="1" y="6" width="8" height="3" rx="1"/><rect x="1" y="11" width="5" height="2" rx="1"/></svg><span class="slbl">Pipeline</span></button>
+    <button class="sbi" onclick="showPage('nba')"><svg class="sic" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 5.5"/></svg><span class="slbl">Deal Intelligence</span></button>
+    <button class="sbi" onclick="showPage('kpi')"><svg class="sic" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 11L5 7.5L8 9.5L12 4"/><circle cx="12" cy="4" r="1.2" fill="currentColor" stroke="none"/></svg><span class="slbl">Impact Dashboard</span></button>
+    <div class="sb-sec">Signals</div>
+    <button class="sbi" onclick="showPage('alerts')"><svg class="sic" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1.5C4.79 1.5 3 3.29 3 5.5v3L1.5 10h11L11 8.5V5.5C11 3.29 9.21 1.5 7 1.5z"/><path d="M5.5 10.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5"/></svg><span class="slbl">CDH Alerts</span><span class="sbdg">5</span></button>
+  </div>
+  <div class="sb-user"><div class="sb-av">MT</div><div class="sb-ui"><div class="sb-un">Matt Toto</div><div class="sb-ur">Enterprise AE · FinServ</div></div></div>
+</div>
+
+<div class="main-area">
+  <div class="topbar" style="position:relative;">
+    <div class="tb-bc" id="bc">GTM Engine › <span>Workspace</span> › <strong>Pipeline</strong></div>
+    <div class="sw"><svg class="sico" width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="3.5" stroke="#8A96A3" stroke-width="1.2"/><path d="M8 8l2.5 2.5" stroke="#8A96A3" stroke-width="1.2" stroke-linecap="round"/></svg><input class="si" id="srch" placeholder="Search accounts…" oninput="handleSearch(this.value)"/></div>
+    <div class="tb-sync"><div class="ldot"></div>CDH · <span id="sync-ts">just now</span></div>
+    <button class="nb" onclick="toggleNotif()"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1.5C4.79 1.5 3 3.29 3 5.5v3L1.5 10h11L11 8.5V5.5C11 3.29 9.21 1.5 7 1.5z"/><path d="M5.5 10.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5"/></svg><div class="nc" id="nc">5</div></button>
+    <div class="np" id="np">
+      <div class="nph"><span class="npt">CDH alerts</span><button class="npc" onclick="clearN()">Mark all read</button></div>
+      <div class="ni unread"><div class="nid" style="background:var(--red);"></div><div class="nib"><div class="nit">Bank of America — 91% utilization</div><div class="nid2">Salesforce evaluation active. 8-week decision window.</div><div class="nits">2 min ago</div></div><div class="niud"></div></div>
+      <div class="ni unread"><div class="nid" style="background:var(--amber);"></div><div class="nib"><div class="nit">Humana — memo ready</div><div class="nid2">Agentic swarm complete. Confidence 88%.</div><div class="nits">14 min ago</div></div><div class="niud"></div></div>
+      <div class="ni unread"><div class="nid" style="background:var(--teal);"></div><div class="nib"><div class="nit">Vodafone — EMEA budget signal</div><div class="nid2">Q2 window opens in 10 weeks.</div><div class="nits">1 hr ago</div></div><div class="niud"></div></div>
+      <div class="ni"><div class="nid" style="background:var(--violet);"></div><div class="nib"><div class="nit">UnitedHealthcare — CTO 90-day window</div><div class="nid2">Strategic review opens. Request briefing.</div><div class="nits">3 hrs ago</div></div></div>
+      <div class="ni"><div class="nid" style="background:var(--blue);"></div><div class="nib"><div class="nit">AT&T — propensity 71% rising</div><div class="nid2">Expected to cross 85% in ~3 weeks.</div><div class="nits">Yesterday</div></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ PIPELINE ═══ -->
+  <div id="page-pipeline" class="page on content">
+    <div class="pip-krow">
+      <div class="kc"><div class="kc-l">Expansion ACV — Matt Toto</div><div class="kc-v">$15.5M</div><div class="kc-d up">4 active accounts</div></div>
+      <div class="kc"><div class="kc-l">Weighted pipeline</div><div class="kc-v">$11.2M</div><div class="kc-d up">by propensity score</div></div>
+      <div class="kc"><div class="kc-l">CDH triggers today</div><div class="kc-v">14</div><div class="kc-d up">+3 vs. 30-day avg</div></div>
+      <div class="kc"><div class="kc-l">Avg. close probability</div><div class="kc-v">79%</div><div class="kc-d up">across active deals</div></div>
+    </div>
+    <div class="pip-body">
+      <div class="pip-left">
+        <div class="funnel-card">
+          <div class="funnel-title">Pipeline stage distribution — Matt Toto · Q1 2026</div>
+          <div class="funnel-stages">
+            <div class="funnel-stage"><div class="fs-label">Negotiation</div><div class="fs-bar-wrap"><div class="fs-bar" style="width:100%;background:var(--teal);"><span class="fs-bar-lbl">Bank of America</span></div></div><div class="fs-meta"><div class="fs-acv">$4.8M</div><div class="fs-n">1 deal</div></div></div>
+            <div class="funnel-stage"><div class="fs-label">Proposal</div><div class="fs-bar-wrap"><div class="fs-bar" style="width:80%;background:var(--blue);"><span class="fs-bar-lbl">Humana</span></div></div><div class="fs-meta"><div class="fs-acv">$3.1M</div><div class="fs-n">1 deal</div></div></div>
+            <div class="funnel-stage"><div class="fs-label">Solution Fit</div><div class="fs-bar-wrap"><div class="fs-bar" style="width:90%;background:var(--violet);"><span class="fs-bar-lbl">Vodafone</span></div></div><div class="fs-meta"><div class="fs-acv">$5.2M</div><div class="fs-n">1 deal</div></div></div>
+            <div class="funnel-stage"><div class="fs-label">Value Prop</div><div class="fs-bar-wrap"><div class="fs-bar" style="width:55%;background:var(--amber);"><span class="fs-bar-lbl">UnitedHealthcare</span></div></div><div class="fs-meta"><div class="fs-acv">$2.4M</div><div class="fs-n">1 deal</div></div></div>
+          </div>
+        </div>
+        <div class="fbar">
+          <span style="font-size:10px;font-weight:500;color:var(--txt2);">Filter:</span>
+          <div class="fc active" onclick="toggleF(this,'all')">All</div>
+          <div class="fc" onclick="toggleF(this,'Financial Services')">Financial Services</div>
+          <div class="fc" onclick="toggleF(this,'Healthcare')">Healthcare</div>
+          <div class="fc" onclick="toggleF(this,'Telecom')">Telecom</div>
+          <div class="fsep"></div>
+          <div class="fc" onclick="toggleF(this,'high')">High priority</div>
+          <div class="fc" onclick="toggleF(this,'competitive')">Competitive risk</div>
+          <span class="rc" id="rc">4 accounts</span>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-hdr"><span class="tbl-t">Expansion pipeline</span><div style="display:flex;gap:5px;"><span class="badge bn">Pega Infinity '25</span><span class="badge bt">CDH-triggered</span></div></div>
+          <table class="tbl"><thead><tr>
+            <th onclick="srtTbl(0)">Account<span class="si-ind" id="si0"></span></th>
+            <th>Product motion</th>
+            <th onclick="srtTbl(2)">ACV<span class="si-ind" id="si2"></span></th>
+            <th>Stage</th>
+            <th onclick="srtTbl(4)">Propensity<span class="si-ind" id="si4"> ↓</span></th>
+            <th>Signals</th>
+            <th>Priority</th>
+          </tr></thead><tbody id="pip-tbody"></tbody></table>
+          <div class="no-res" id="no-res" style="display:none;">No accounts match.</div>
+        </div>
+      </div>
+      <!-- SIDE PANEL -->
+      <div class="pip-side" id="pip-side">
+        <div class="ps-hdr"><div class="ps-acct" id="ps-acct">Bank of America</div><div class="ps-sub" id="ps-sub">Financial Services · CDH + GenAI Blueprint™</div></div>
+        <div class="ps-body">
+          <div class="ps-sec">
+            <div class="ps-t">Account overview</div>
+            <div class="ps-krow">
+              <div class="ps-k"><div class="ps-kl">Current ARR</div><div class="ps-kv teal" id="ps-arr">$2.1M</div></div>
+              <div class="ps-k"><div class="ps-kl">Contract end</div><div class="ps-kv red" id="ps-end">Dec 2026</div></div>
+              <div class="ps-k"><div class="ps-kl">Propensity</div><div class="ps-kv green" id="ps-prop">94%</div></div>
+              <div class="ps-k"><div class="ps-kl">ACV target</div><div class="ps-kv" id="ps-acv">$4.8M</div></div>
+            </div>
+          </div>
+          <div class="ps-sec">
+            <div class="ps-t">Recommended play</div>
+            <div class="play-box" id="ps-play">Position Pega CDH's 1-to-1 real-time decisioning against BofA's AI-at-scale mandate. Displace Salesforce before the 8-week window closes.</div>
+          </div>
+          <div class="ps-sec">
+            <div class="ps-t">Buying committee</div>
+            <div class="committee" id="ps-comm"></div>
+          </div>
+          <div class="ps-sec">
+            <div class="ps-t">Next steps</div>
+            <div class="steps-list" id="ps-steps"></div>
+          </div>
+          <div class="ps-actrow">
+            <button class="btn btn-t" onclick="showPage('nba')">Open in Deal Intelligence →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DEAL INTELLIGENCE ═══ -->
+  <div id="page-nba" class="page content">
+    <div class="two-col">
+      <div class="col-l">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;"><span style="font-size:12px;font-weight:500;color:var(--txt);">4 accounts — Matt Toto</span><span class="badge bn">By propensity</span></div>
+        <div id="nba-list"></div>
+      </div>
+      <div class="col-r">
+        <div class="det-card">
+          <div class="det-hdr"><div class="det-acct" id="d-acct">Bank of America</div><div class="det-meta-row"><span class="dm" id="d-ind">Financial Services</span><span class="dm" id="d-prod">CDH + GenAI Blueprint™</span><span class="dm hl" id="d-badge">Expand now</span><span class="dm">AE: Matt Toto</span><span class="dm warn" id="d-comp">vs. Salesforce FSC</span></div></div>
+          <div class="acct-strip"><div class="as-i"><div class="as-l">Current ARR</div><div class="as-v" id="d-arr">$2.1M</div></div><div class="as-i"><div class="as-l">Contract end</div><div class="as-v red" id="d-end">Dec 2026</div></div><div class="as-i"><div class="as-l">CSM owner</div><div class="as-v" id="d-csm">J. Martinez</div></div><div class="as-i"><div class="as-l">Account tier</div><div class="as-v teal" id="d-tier">Tier 1 · Fortune 50</div></div></div>
+          <div class="det-body">
+            <div class="sec"><div class="sec-t">Recommended play <div class="sec-t-line"></div></div><div class="play-box2" id="d-play">Position Pega CDH's 1-to-1 real-time decisioning against BofA's AI-at-scale mandate.</div></div>
+            <div class="sec"><div class="sec-t">Buying committee <div class="sec-t-line"></div></div><div class="det-committee" id="d-comm"></div></div>
+            <div class="sec"><div class="sec-t">Commercial summary <div class="sec-t-line"></div></div><div class="dr-grid" id="d-rows"></div></div>
+            <div class="sec"><div class="sec-t">Next steps <div class="sec-t-line"></div></div><div class="det-steps" id="d-steps"></div></div>
+            <div class="sec"><div class="sec-t">Deal desk memo <div class="sec-t-line"></div></div>
+              <div class="memo-wrap">
+                <div class="memo-tb"><div class="memo-tb-l"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="var(--violet)" stroke-width="0.8"/><path d="M2 3h6M2 5h6M2 7h4" stroke="var(--violet)" stroke-width="0.8" stroke-linecap="round"/></svg><span class="memo-tb-title">Deal Desk Memo</span><span class="ai-badge">AI-generated</span><span class="edit-badge" id="edit-badge">Edited by Matt Toto</span></div><div class="memo-tb-r"><span class="memo-ts" id="d-ts">Generated 2 min ago</span><button class="tbtn" onclick="exportMemo()"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M5 1v5M3 4l2 2 2-2"/><path d="M1 7v2h8V7" stroke-linecap="round"/></svg>Export</button><button class="tbtn" id="edit-btn" onclick="toggleEdit()"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M7 1.5L8.5 3 3.5 8H2V6.5L7 1.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>Edit memo</button></div></div>
+                <div id="memo-read" class="memo-body"></div>
+                <div id="memo-edit-wrap" style="display:none;"><div class="edit-hint"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L6.2 3.8H9L6.8 5.5 7.5 8.5 5 6.8 2.5 8.5 3.2 5.5 1 3.8H3.8L5 1z" fill="var(--amber)"/></svg>You are editing the AI-generated memo. Changes will be tracked.</div><textarea class="memo-edit-area" id="memo-ta"></textarea><div class="save-bar"><span class="save-info" id="diff-info">0 chars changed from AI draft</span><button class="tbtn" onclick="cancelEdit()">Cancel</button><button class="tbtn tl" onclick="saveMemo()">Save changes</button></div></div>
+                <div class="conf-row"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L6.2 3.8H9L6.8 5.5 7.5 8.5 5 6.8 2.5 8.5 3.2 5.5 1 3.8H3.8L5 1z" fill="var(--green)"/></svg><span>Memo confidence</span><div class="conf-bg"><div class="conf-fg" id="d-conf" style="width:93%;"></div></div><strong id="d-confv">93%</strong><span style="font-size:9px;color:var(--green);">RAG-grounded · Azure OpenAI · Private tenant</span></div>
+              </div>
+            </div>
+            <div class="sec"><div class="sec-t">Audit trail <div class="sec-t-line"></div></div><div class="audit-trail" id="d-audit"></div></div>
+            <div class="actrow"><button class="btn btn-t" id="btn-approve" onclick="doApprove()">Approve &amp; route to deal desk</button><button class="btn btn-r" onclick="doReject()">Request more info</button><button class="btn" onclick="sendPrompt('Walk me through how the Pega agentic GTM engine built this memo for '+deals[selIdx].name)">How was this built ↗</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ IMPACT DASHBOARD ═══ -->
+  <div id="page-kpi" class="page content">
+    <div class="imp-krow">
+      <div class="imp-kc"><div class="imp-kl">Deal desk cycle time</div><div class="imp-kv">−38%</div><div class="imp-kd up">Target −40% · On track</div></div>
+      <div class="imp-kc"><div class="imp-kl">Virtual FTE capacity</div><div class="imp-kv">47 FTEs</div><div class="imp-kd up">Target 50 · 4h/rep/wk</div></div>
+      <div class="imp-kc"><div class="imp-kl">Discount depth reduction</div><div class="imp-kv">−3.1%</div><div class="imp-kd up">Target −3–5% · In range</div></div>
+      <div class="imp-kc"><div class="imp-kl">Proactive pipeline</div><div class="imp-kv">+$8.4M</div><div class="imp-kd up">Zero headcount · CDH</div></div>
+    </div>
+
+    <div class="imp-body">
+      <div class="imp-card">
+        <div class="imp-ct">Deal desk cycle time — trend<span class="imp-ct-r">Oct '25 → Mar '26</span></div>
+        <div class="chart-wrap"><canvas id="c1"></canvas></div>
+        <div class="tgt-row"><span class="tgt-lbl">Progress to target (−40%)</span><div class="prog-bg"><div class="prog-fg" style="width:95%;background:var(--teal);"></div></div><span class="tgt-val">95%</span></div>
+      </div>
+      <div class="imp-card">
+        <div class="imp-ct">Virtual FTE capacity unlocked<span class="imp-ct-r">cumulative, this quarter</span></div>
+        <div class="chart-wrap"><canvas id="c2"></canvas></div>
+        <div class="tgt-row"><span class="tgt-lbl">Progress to target (50 FTEs)</span><div class="prog-bg"><div class="prog-fg" style="width:94%;background:var(--blue);"></div></div><span class="tgt-val">94%</span></div>
+      </div>
+      <div class="imp-card">
+        <div class="imp-ct">Pipeline by product motion<span class="imp-ct-r">ACV weighted</span></div>
+        <div class="chart-wrap"><canvas id="c3"></canvas></div>
+      </div>
+      <div class="imp-card">
+        <div class="imp-ct">Proactive pipeline unlocked<span class="imp-ct-r">monthly, CDH-triggered</span></div>
+        <div class="chart-wrap"><canvas id="c4"></canvas></div>
+        <div class="tgt-row"><span class="tgt-lbl">Q1 target ($10M)</span><div class="prog-bg"><div class="prog-fg" style="width:84%;background:var(--violet);"></div></div><span class="tgt-val">$8.4M</span></div>
+      </div>
+    </div>
+
+    <div class="agent-perf">
+      <div style="font-size:12px;font-weight:500;color:var(--txt);">Agentic swarm — performance this quarter</div>
+      <div class="ap-grid">
+        <div class="ap-cell"><div class="ap-val">47</div><div class="ap-lbl">Memos generated</div><div class="ap-sub up">+12 vs. Q4 '25</div></div>
+        <div class="ap-cell"><div class="ap-val">68%</div><div class="ap-lbl">Auto-approved rate</div><div class="ap-sub up">up from 51%</div></div>
+        <div class="ap-cell"><div class="ap-val">2.3h</div><div class="ap-lbl">Avg. AE time saved / deal</div><div class="ap-sub up">was 0h</div></div>
+        <div class="ap-cell"><div class="ap-val">91%</div><div class="ap-lbl">Avg. memo confidence</div><div class="ap-sub up">RAG-grounded</div></div>
+      </div>
+    </div>
+
+    <div class="tbl-card">
+      <div class="tbl-hdr"><span class="tbl-t">Account breakdown — ACV, NRR benchmark &amp; CDH propensity</span><span class="badge bt">Live</span></div>
+      <table class="bk-tbl">
+        <thead><tr><th>Account</th><th>Industry</th><th>Product motion</th><th>ACV target</th><th>NRR cohort</th><th>Propensity</th><th>Memo status</th><th>Priority</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Bank of America</strong></td><td>Financial Services</td><td>CDH + GenAI Blueprint™</td><td><strong>$4.8M</strong></td><td><span style="color:var(--green);font-weight:500;">118%</span></td><td><span style="color:var(--teal);font-weight:500;">94%</span></td><td><span class="badge bg">Approved</span></td><td><span class="badge bg">High</span></td></tr>
+          <tr><td><strong>Humana</strong></td><td>Healthcare</td><td>GenAI Blueprint™ + CS</td><td><strong>$3.1M</strong></td><td><span style="color:var(--green);font-weight:500;">111%</span></td><td><span style="color:var(--blue);font-weight:500;">81%</span></td><td><span class="badge ba">Under review</span></td><td><span class="badge ba">Medium</span></td></tr>
+          <tr><td><strong>Vodafone</strong></td><td>Telecom</td><td>Pega Platform + CDH</td><td><strong>$5.2M</strong></td><td><span style="color:var(--green);font-weight:500;">109%</span></td><td><span style="color:var(--violet);font-weight:500;">67%</span></td><td><span class="badge bb">In progress</span></td><td><span class="badge bb">Develop</span></td></tr>
+          <tr><td><strong>UnitedHealthcare</strong></td><td>Healthcare</td><td>CDH + Process AI</td><td><strong>$2.4M</strong></td><td><span style="color:var(--txt3);font-weight:500;">TBD</span></td><td><span style="color:var(--amber);font-weight:500;">73%</span></td><td><span class="badge bv">Draft</span></td><td><span class="badge ba">Monitor</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ ALERTS ═══ -->
+  <div id="page-alerts" class="page content">
+    <div class="af"><div class="af-hdr"><span class="af-t">CDH alert feed — Matt Toto</span><div style="display:flex;gap:5px;"><span class="badge br">5 unread</span><span class="badge bt">Live</span></div></div>
+      <div class="af-item unread"><div class="af-ic" style="background:var(--red2);"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1L9 6H13L9.5 9L11 13L7 10.5L3 13L4.5 9L1 6H5L7 1Z" fill="var(--red)"/></svg></div><div class="af-body"><div class="af-tt">Bank of America — CDH 91% · Immediate action</div><div class="af-d">Wealth mgmt threshold crossed. Propensity 94%. Salesforce FSC on shortlist. Window: 8 weeks. Memo ready.</div><div class="af-foot"><span class="af-ts">2 min ago</span><span class="badge br">Immediate</span></div></div><div class="af-ud"></div></div>
+      <div class="af-item unread"><div class="af-ic" style="background:var(--amber2);"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L9 6H13L9.5 8.5L11 13L7 10.5L3 13L4.5 8.5L1 6H5L7 1.5Z" fill="var(--amber)"/></svg></div><div class="af-body"><div class="af-tt">Humana — memo complete · Ready for review</div><div class="af-d">Blueprint + CS case generated. Confidence 88%. ServiceNow displacement narrative loaded.</div><div class="af-foot"><span class="af-ts">14 min ago</span><span class="badge ba">Review</span></div></div><div class="af-ud"></div></div>
+      <div class="af-item unread"><div class="af-ic" style="background:var(--teal3);"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="var(--teal)" stroke-width="1.3"/><path d="M4.5 7l2 2 3-3" stroke="var(--teal)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="af-body"><div class="af-tt">Vodafone — EMEA Q2 budget signal</div><div class="af-d">Procurement activity. Q2 opens in 10 weeks. Blueprint ROI confirmed at 67% ops reduction.</div><div class="af-foot"><span class="af-ts">1 hr ago</span><span class="badge bb">Budget</span></div></div><div class="af-ud"></div></div>
+      <div class="af-item unread"><div class="af-ic" style="background:var(--violet2);"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" stroke="var(--violet)" stroke-width="1.3"/><path d="M2 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="var(--violet)" stroke-width="1.3" stroke-linecap="round"/></svg></div><div class="af-body"><div class="af-tt">UnitedHealthcare — CTO 90-day mark</div><div class="af-d">Strategic review in 6 weeks. Request CDH discovery briefing. CMS mandate creating urgency.</div><div class="af-foot"><span class="af-ts">3 hrs ago</span><span class="badge bv">Timing</span></div></div><div class="af-ud"></div></div>
+      <div class="af-item"><div class="af-ic" style="background:var(--blue2);"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 10L5 7.5L8 9.5L12 3.5" stroke="var(--blue)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="af-body"><div class="af-tt">AT&T — propensity 71% rising</div><div class="af-d">Projected 85% in ~3 weeks. No competitive risk. Prepare expansion brief.</div><div class="af-foot"><span class="af-ts">Yesterday</span><span class="badge bb">Watch</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="footer"><span class="ft-l">Matt Toto · GTM GenAI Product Owner · Case Study · March 2026</span><span class="ft-r">Pega GTM Intelligence Engine · Pega Infinity '25 + CDH</span></div>
+</div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const deals=[
+  {name:"Bank of America",ind:"Financial Services",prod:"CDH + GenAI Blueprint™",acv:"$4.8M",acvN:4.8,stage:"Negotiation",stageCls:"bv",prop:94,propC:"#00A88E",signals:["91% utilization","vs. Salesforce FSC"],pri:"bg",priL:"High",badge:"Expand now",comp:"vs. Salesforce FSC",arr:"$2.1M",end:"Dec 2026",csm:"J. Martinez",tier:"Tier 1 · Fortune 50",play:"Position Pega CDH's 1-to-1 real-time decisioning against BofA's AI-at-scale mandate. Displace Salesforce FSC before the 8-week procurement window. Lead with wealth retention ROI — 15% Y1 discount anchors Q2 budget.",playShort:"Position Pega CDH's 1-to-1 real-time decisioning against BofA's AI-at-scale mandate. Displace Salesforce before the 8-week window closes.",
+   committee:[{role:"Economic Buyer",name:"CFO · Borthwick",st:"Engaged",c:"var(--green)"},{role:"Technical Buyer",name:"CTO · Reilly",st:"Evaluating",c:"var(--amber)"},{role:"Champion",name:"SVP Digital · Chen",st:"Strong advocate",c:"var(--green)"}],
+   rows:[["ACV","$4.8M (36-mo)",""],["Discount","15% Y1 — Tier 1 ✓",""],["Payment terms","Net-45 — review req.","va"],["NRR cohort","118% at Y1 renewal","vg"],["Y2 upsell prob.","94% — retail banking","vg"],["Seat whitespace","8,200 seats (4×)",""]],
+   steps:[{a:"Send competitive brief to CTO Reilly",d:"By Mar 28"},{a:"Align with CFO on Q2 budget — 15% Y1 anchor",d:"Next week"},{a:"Request procurement shortlist meeting",d:"Before Apr 5"}],
+   memoText:"Strategic context: CEO Moynihan's 2026 mandate — AI-driven personalization at scale in wealth management. BofA 10-K cites 20% wealth client retention improvement as board-level KPI. Pega CDH's 1-to-1 real-time decisioning is the only platform that maps to this outcome.\n\nCompetitive displacement: Salesforce FSC on evaluation shortlist. Salesforce wins on CRM workflow — Pega CDH wins on real-time AI decisioning depth. Frame: 'Salesforce tells your reps what happened. Pega CDH tells your clients what to do next — in real time.' Window: 8 weeks.\n\nMargin defense: 15% Y1 within Tier 1 Fortune 50 variance. CDH + Blueprint FS cohort: 118% NRR at Y1. 94% probability of $3M+ retail banking upsell Y2. LTV exceeds Y1 concession by 3.8×.\n\nGuardrails: Standard MSA. Pricing within approved variance. RAG-grounded via private Azure OpenAI tenant. Zero public exposure.",
+   conf:93,ts:"Generated 2 min ago",audit:[{c:"var(--teal)",t:"AI memo generated by agentic swarm",ts:"Today, 10:41 AM"},{c:"var(--blue)",t:"CDH trigger fired — 91% utilization",ts:"Today, 10:39 AM"},{c:"var(--violet)",t:"Account assigned to Matt Toto",ts:"Feb 12, 2026"}]
+  },
+  {name:"Humana",ind:"Healthcare",prod:"GenAI Blueprint™ + CS",acv:"$3.1M",acvN:3.1,stage:"Proposal",stageCls:"bb",prop:81,propC:"#1564C0",signals:["Claims backlog","vs. ServiceNow"],pri:"ba",priL:"Medium",badge:"Proposal ready",comp:"vs. ServiceNow",arr:"$1.4M",end:"Sep 2026",csm:"A. Patel",tier:"Tier 1 · Fortune 100",play:"Lead with Blueprint's AI-accelerated claims modernization. Position Pega Customer Service as the intelligent layer. CMS deadline creates Q2 urgency — displace ServiceNow before the window closes.",playShort:"Lead with Blueprint's claims modernization ROI. CMS deadline creates urgency — displace ServiceNow.",
+   committee:[{role:"Economic Buyer",name:"CFO · Diamond",st:"Budget approved",c:"var(--green)"},{role:"Technical Buyer",name:"CIO · Russ Pepe",st:"Engaged",c:"var(--green)"},{role:"Champion",name:"VP Claims · Rivera",st:"Driving internally",c:"var(--green)"}],
+   rows:[["ACV","$3.1M (36-mo)",""],["Discount","12% Y1 — healthcare ✓",""],["NRR cohort","111% at Y1 renewal","vg"],["Y2 upsell prob.","87% — member services","vg"],["Seat whitespace","6,500 seats (3×)",""],["CMS deadline","Q2 2026 — urgency","va"]],
+   steps:[{a:"Deliver Blueprint ROI deck to CIO Pepe",d:"By Mar 29"},{a:"Draft CMS compliance alignment narrative",d:"By Apr 2"},{a:"Submit proposal to procurement",d:"By Apr 7"}],
+   memoText:"Strategic context: CMS star rating mandate requires Humana to modernize claims processing by Q2 2026. Current ServiceNow deployment cannot support real-time AI decisioning. Pega GenAI Blueprint has 150K+ blueprints in production globally — proven at healthcare scale.\n\nCompetitive displacement: ServiceNow excels at IT service management — not clinical workflow intelligence. Pega Customer Service + Blueprint provides intelligent case management with built-in compliance guardrails ServiceNow cannot match.\n\nMargin defense: 12% Y1 within healthcare vertical approval. Blueprint + CS cohort: 111% NRR at Y1. 87% probability of member services expansion Y2.\n\nGuardrails: HIPAA-compliant on Pega Cloud. Standard MSA with BAA. Pricing within approved variance.",
+   conf:88,ts:"Generated 14 min ago",audit:[{c:"var(--teal)",t:"AI memo generated by agentic swarm",ts:"Today, 10:28 AM"},{c:"var(--amber)",t:"CDH trigger — 81% propensity",ts:"Today, 10:25 AM"},{c:"var(--violet)",t:"Account assigned to Matt Toto",ts:"Jan 5, 2026"}]
+  },
+  {name:"Vodafone",ind:"Telecom",prod:"Pega Platform + CDH",acv:"$5.2M",acvN:5.2,stage:"Solution Fit",stageCls:"bg",prop:67,propC:"#5C3FA0",signals:["Blueprint ROI confirmed","EMEA Q2 budget"],pri:"bb",priL:"Develop",badge:"Expand",comp:"Incumbency — no risk",arr:"$2.8M",end:"Mar 2027",csm:"S. Nguyen",tier:"Tier 1 · Global 500",play:"Vodafone confirmed 67% ops reduction from Blueprint. Expand to CDH-powered 1-to-1 decisioning. EMEA Q2 budget opens in 10 weeks. Lead with Blueprint ROI as expansion anchor.",playShort:"Expand Blueprint success to CDH. EMEA Q2 window opens in 10 weeks. Lead with ROI data.",
+   committee:[{role:"Economic Buyer",name:"CFO · Della Valle",st:"Engaged via QBR",c:"var(--green)"},{role:"Technical Buyer",name:"CTO · Wibergh",st:"Evaluating CDH",c:"var(--amber)"},{role:"Champion",name:"VP Digital · Strauss",st:"Blueprint advocate",c:"var(--green)"}],
+   rows:[["ACV","$5.2M (36-mo)",""],["Discount","10% Y1 — existing client ✓",""],["Blueprint ROI","67% ops time reduction","vg"],["NRR cohort","109% at Y1 renewal","vg"],["Seat whitespace","12,000 seats CX (5×)",""],["Competitive risk","None — incumbency",""]],
+   steps:[{a:"Prepare CDH brief anchored to Blueprint ROI",d:"By Apr 3"},{a:"Request EMEA QBR with CTO Wibergh",d:"Before Apr 10"},{a:"Align Q2 budget timeline with CFO",d:"By Apr 14"}],
+   memoText:"Strategic context: Vodafone confirmed 67% reduction in network ops time from Blueprint. CEO publicly committed to AI transformation. CDH expansion is the architectural next step — an extension, not a new sale.\n\nExpansion narrative: Blueprint modernized the engine. CDH optimizes the revenue side — real-time decisioning across 300M+ customers. Frame: 'You've proven the platform. Now turn it into a growth engine.'\n\nMargin defense: Existing customer rate standard. Platform + CDH EMEA cohort: 109% NRR at Y1. 5× seat whitespace in CX. Incumbent position held.\n\nGuardrails: GDPR compliant on Pega Cloud EU region. Standard MSA extension. Within existing customer rate card.",
+   conf:79,ts:"Generated 1 hr ago",audit:[{c:"var(--teal)",t:"AI memo generated",ts:"Today, 9:42 AM"},{c:"var(--blue)",t:"EMEA budget signal detected",ts:"Today, 9:40 AM"},{c:"var(--violet)",t:"Account assigned to Matt Toto",ts:"Nov 3, 2025"}]
+  },
+  {name:"UnitedHealthcare",ind:"Healthcare",prod:"CDH + Process AI",acv:"$2.4M",acvN:2.4,stage:"Value Prop",stageCls:"ba",prop:73,propC:"#C97A00",signals:["CMS mandate","New CTO signal"],pri:"ba",priL:"Monitor",badge:"Build case",comp:"None detected",arr:"$900K",end:"Jun 2027",csm:"B. Torres",tier:"Tier 1 · Fortune 10",play:"New CTO in priority-setting mode. CMS mandate for 2027 creates AI decisioning urgency. Build board case now — present at the CTO's 90-day review. Position as strategic AI infrastructure partner.",playShort:"New CTO in priority-setting mode. Build board case for CTO 90-day review. Position as AI infrastructure partner.",
+   committee:[{role:"Economic Buyer",name:"CFO · John Rex",st:"Not yet engaged",c:"var(--red)"},{role:"Technical Buyer",name:"CTO (new, 90 days)",st:"Priority-setting",c:"var(--amber)"},{role:"Champion",name:"VP Member Ops · Park",st:"Early champion",c:"var(--amber)"}],
+   rows:[["ACV (potential)","$2.4M",""],["Deal stage","Value Prop — early","va"],["CTO tenure","90 days","va"],["CMS deadline","2027 — building",""],["Propensity","73% — rising","vg"],["Rec. timing","CTO 90-day review",""]],
+   steps:[{a:"Request CTO discovery briefing",d:"In next 2 weeks"},{a:"Prepare population health outcomes narrative",d:"Before CTO meeting"},{a:"Loop CSM Torres into strategy",d:"This week"}],
+   memoText:"Strategic context: New CTO in priority-setting mode — 90-day review is the highest-value entry point. CMS Star Ratings mandate for 2027 drives UHC to modernize member decisioning. Pega CDH + Process AI is the architectural fit.\n\nPlay: Don't push commercial yet. Request a CDH capability briefing. Frame Pega as AI decisioning infrastructure partner — lead with population health outcomes, not features.\n\nWatch signals: Auto-alert if CDH utilization exceeds 75%, CTO makes public AI statements, or CFO Rex appears at industry AI events. These are accelerant triggers for commercial motion.",
+   conf:71,ts:"Generated 3 hrs ago",audit:[{c:"var(--teal)",t:"AI memo generated",ts:"Today, 7:15 AM"},{c:"var(--violet)",t:"CTO 90-day watch alert triggered",ts:"Today, 7:13 AM"},{c:"var(--blue)",t:"Account assigned to Matt Toto",ts:"Mar 1, 2026"}]
+  }
+];
+
+let selIdx=0,editMode=false,editedMemos={};
+
+function memoToHTML(txt){
+  return txt.split('\n\n').filter(p=>p.trim()).map(p=>{
+    const m=p.match(/^([^:]+):\s*(.*)/s);
+    return m?`<div class="memo-sec"><strong>${m[1]}:</strong> ${m[2]}</div>`:`<div class="memo-sec">${p}</div>`;
+  }).join('');
+}
+
+function renderNBA(){
+  document.getElementById('nba-list').innerHTML=deals.map((d,i)=>`
+    <div id="nb${i}" class="nba-i${i===selIdx?' sel':''}" onclick="selNBA(${i})">
+      <div class="nba-top"><div><div class="nba-n">${d.name}</div><div class="nba-s">${d.ind} · ${d.prod}</div></div><span class="badge ${d.pri}">${d.priL}</span></div>
+      <div class="nba-p"><span style="font-size:9px;color:var(--txt3);">Propensity</span><div class="nba-bar"><div class="nba-f" style="width:${d.prop}%;background:${d.propC};"></div></div><span class="nba-pct" style="color:${d.propC};">${d.prop}%</span></div>
+      <div class="nba-chips">${d.signals.map(s=>`<span class="${s.startsWith('vs.')?'vsc chip':'chip'}">${s}</span>`).join('')}<span class="chip">${d.acv}</span></div>
+    </div>`).join('');
+}
+
+function selNBA(i){
+  selIdx=i;editMode=false;
+  renderNBA();
+  const d=deals[i];
+  document.getElementById('d-acct').textContent=d.name;
+  document.getElementById('d-ind').textContent=d.ind;
+  document.getElementById('d-prod').textContent=d.prod;
+  document.getElementById('d-badge').textContent=d.badge;
+  document.getElementById('d-comp').textContent=d.comp;
+  document.getElementById('d-arr').textContent=d.arr;
+  document.getElementById('d-end').textContent=d.end;
+  document.getElementById('d-csm').textContent=d.csm;
+  document.getElementById('d-tier').textContent=d.tier;
+  document.getElementById('d-play').textContent=d.play;
+  document.getElementById('d-ts').textContent=d.ts;
+  document.getElementById('d-comm').innerHTML=d.committee.map(c=>`<div class="dc"><div class="dc-role">${c.role}</div><div class="dc-name">${c.name}</div><div class="dc-st"><div class="dc-dot" style="background:${c.c};"></div><span style="color:${c.c};">${c.st}</span></div></div>`).join('');
+  document.getElementById('d-rows').innerHTML=d.rows.map(r=>`<div class="dr"><div class="dr-l">${r[0]}</div><div class="dr-${r[2]||'v'}">${r[1]}</div></div>`).join('');
+  document.getElementById('d-steps').innerHTML=d.steps.map((s,j)=>`<div class="ds-i"><div class="ds-num">${j+1}</div><div class="ds-b"><div class="ds-a">${s.a}</div><div class="ds-d">${s.d}</div></div><div class="ds-ck" onclick="this.classList.toggle('done');if(this.classList.contains('done'))this.innerHTML='<svg width=8 height=8 viewBox=\\'0 0 8 8\\' fill=none><path d=\\'M1.5 4l2 2 3-3\\' stroke=white stroke-width=1.3 stroke-linecap=round stroke-linejoin=round/></svg>';else this.innerHTML='';"></div></div>`).join('');
+  const cur=editedMemos[i]||d.memoText;
+  document.getElementById('memo-read').innerHTML=memoToHTML(cur);
+  document.getElementById('d-conf').style.width=d.conf+'%';
+  document.getElementById('d-confv').textContent=d.conf+'%';
+  document.getElementById('d-audit').innerHTML=d.audit.map(a=>`<div class="at-i"><div class="at-d" style="background:${a.c};"></div><div class="at-t"><strong>${a.t}</strong></div><div class="at-ts">${a.ts}</div></div>`).join('');
+  const edited=!!editedMemos[i];
+  document.getElementById('edit-badge').style.display=edited?'inline-flex':'none';
+  document.getElementById('memo-read').style.display='block';
+  document.getElementById('memo-edit-wrap').style.display='none';
+  document.getElementById('edit-btn').classList.remove('ea');
+  document.getElementById('edit-btn').innerHTML='<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M7 1.5L8.5 3 3.5 8H2V6.5L7 1.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>Edit memo';
+  const btn=document.getElementById('btn-approve');
+  btn.textContent='Approve & route to deal desk';btn.className='btn btn-t';btn.disabled=false;
+}
+
+function toggleEdit(){
+  editMode=!editMode;
+  const cur=editedMemos[selIdx]||deals[selIdx].memoText;
+  if(editMode){
+    document.getElementById('memo-read').style.display='none';
+    document.getElementById('memo-edit-wrap').style.display='block';
+    document.getElementById('memo-ta').value=cur;
+    document.getElementById('edit-btn').classList.add('ea');
+    document.getElementById('edit-btn').innerHTML='Editing…';
+    document.getElementById('memo-ta').oninput=function(){
+      const diff=Math.abs(this.value.length-deals[selIdx].memoText.length);
+      document.getElementById('diff-info').textContent=diff+' chars changed from AI draft';
+    };
+  } else cancelEdit();
+}
+function cancelEdit(){
+  editMode=false;
+  document.getElementById('memo-edit-wrap').style.display='none';
+  document.getElementById('memo-read').style.display='block';
+  document.getElementById('edit-btn').classList.remove('ea');
+  document.getElementById('edit-btn').innerHTML='<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M7 1.5L8.5 3 3.5 8H2V6.5L7 1.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>Edit memo';
+}
+function saveMemo(){
+  const t=document.getElementById('memo-ta').value;
+  editedMemos[selIdx]=t;
+  const d=deals[selIdx];
+  const ts=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  d.audit.unshift({c:"var(--amber)",t:"Memo edited by Matt Toto",ts:"Today, "+ts});
+  document.getElementById('memo-read').innerHTML=memoToHTML(t);
+  document.getElementById('edit-badge').style.display='inline-flex';
+  document.getElementById('d-ts').textContent='Edited by Matt Toto, just now';
+  document.getElementById('d-audit').innerHTML=d.audit.map(a=>`<div class="at-i"><div class="at-d" style="background:${a.c};"></div><div class="at-t"><strong>${a.t}</strong></div><div class="at-ts">${a.ts}</div></div>`).join('');
+  cancelEdit();
+}
+function exportMemo(){
+  const d=deals[selIdx];
+  const t=editedMemos[selIdx]||d.memoText;
+  const blob=new Blob(['PEGA DEAL DESK MEMO\n'+d.name+' | '+d.prod+' | '+d.acv+'\nAE: Matt Toto | '+new Date().toLocaleDateString()+'\n\n'+t],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='DealMemo_'+d.name.replace(/\s/g,'_')+'.txt';a.click();
+}
+function doApprove(){
+  const btn=document.getElementById('btn-approve');
+  btn.textContent='Routed ✓';btn.className='btn btn-n';btn.disabled=true;
+  const d=deals[selIdx];
+  const ts=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  d.audit.unshift({c:"var(--green)",t:"Approved and routed to deal desk by Matt Toto",ts:"Today, "+ts});
+  document.getElementById('d-audit').innerHTML=d.audit.map(a=>`<div class="at-i"><div class="at-d" style="background:${a.c};"></div><div class="at-t"><strong>${a.t}</strong></div><div class="at-ts">${a.ts}</div></div>`).join('');
+}
+function doReject(){sendPrompt('The deal desk needs more data for '+deals[selIdx].name+' — what additional signals should the agentic workflow surface?');}
+
+// PIPELINE
+let afil='all',srchQ='',sortCol=4,sortAs=[true,true,true,true,false,true,true];
+function renderPipeline(){
+  let arr=[...deals];
+  if(srchQ){const q=srchQ.toLowerCase();arr=arr.filter(d=>d.name.toLowerCase().includes(q)||d.prod.toLowerCase().includes(q)||d.ind.toLowerCase().includes(q));}
+  if(afil==='Financial Services')arr=arr.filter(d=>d.ind==='Financial Services');
+  else if(afil==='Healthcare')arr=arr.filter(d=>d.ind==='Healthcare');
+  else if(afil==='Telecom')arr=arr.filter(d=>d.ind==='Telecom');
+  else if(afil==='high')arr=arr.filter(d=>d.prop>=80);
+  else if(afil==='competitive')arr=arr.filter(d=>d.signals.some(s=>s.startsWith('vs.')));
+  if(sortCol===0)arr.sort((a,b)=>sortAs[0]?a.name.localeCompare(b.name):b.name.localeCompare(a.name));
+  else if(sortCol===2)arr.sort((a,b)=>sortAs[2]?a.acvN-b.acvN:b.acvN-a.acvN);
+  else if(sortCol===4)arr.sort((a,b)=>sortAs[4]?a.prop-b.prop:b.prop-a.prop);
+  document.getElementById('rc').textContent=arr.length+' account'+(arr.length!==1?'s':'');
+  document.getElementById('no-res').style.display=arr.length===0?'block':'none';
+  document.getElementById('pip-tbody').innerHTML=arr.map((d,i)=>`
+    <tr class="${i===0?'sel':''}" onclick="selectRow(this,${deals.indexOf(d)})">
+      <td><div class="acct-n">${d.name}</div><div class="acct-s">${d.ind}</div></td>
+      <td><span class="badge bt" style="font-size:9px;">${d.prod}</span></td>
+      <td><strong>${d.acv}</strong></td>
+      <td><span class="badge ${d.stageCls}">${d.stage}</span></td>
+      <td><div class="pb"><div class="pb-b"><div class="pb-f" style="width:${d.prop}%;background:${d.propC};"></div></div><span class="pb-n" style="color:${d.propC};">${d.prop}%</span></div></td>
+      <td><div style="display:flex;gap:3px;flex-wrap:wrap;">${d.signals.map(s=>`<span class="${s.startsWith('vs.')?'vsc':'chip'}">${s}</span>`).join('')}</div></td>
+      <td><span class="badge ${d.pri}">${d.priL}</span></td>
+    </tr>`).join('');
+  if(arr.length>0)updateSidePanel(deals.indexOf(arr[0]));
+}
+
+function selectRow(tr,idx){
+  document.querySelectorAll('.tbl tbody tr').forEach(r=>r.classList.remove('sel'));
+  tr.classList.add('sel');
+  updateSidePanel(idx);
+}
+
+function updateSidePanel(idx){
+  const d=deals[idx];
+  document.getElementById('ps-acct').textContent=d.name;
+  document.getElementById('ps-sub').textContent=d.ind+' · '+d.prod;
+  document.getElementById('ps-arr').textContent=d.arr;
+  document.getElementById('ps-end').textContent=d.end;
+  document.getElementById('ps-prop').textContent=d.prop+'%';
+  document.getElementById('ps-acv').textContent=d.acv;
+  document.getElementById('ps-play').textContent=d.playShort;
+  document.getElementById('ps-comm').innerHTML=d.committee.map(c=>`<div class="cmem"><div class="cmem-dot" style="background:${c.c};"></div><div class="cmem-n">${c.name}</div><div class="cmem-r">${c.role}</div><div class="cmem-st" style="color:${c.c};">${c.st}</div></div>`).join('');
+  document.getElementById('ps-steps').innerHTML=d.steps.map((s,j)=>`<div class="step-i"><div class="step-num">${j+1}</div><div style="flex:1;"><div class="step-a">${s.a}</div><div class="step-d">${s.d}</div></div><div class="step-ck" onclick="this.classList.toggle('done');"></div></div>`).join('');
+}
+
+function srtTbl(col){
+  sortAs[col]=!sortAs[col];sortCol=col;
+  ['si0','si2','si4'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='';});
+  const m={0:'si0',2:'si2',4:'si4'};
+  if(m[col]){const e=document.getElementById(m[col]);if(e)e.textContent=sortAs[col]?' ↑':' ↓';}
+  renderPipeline();
+}
+function handleSearch(v){srchQ=v;renderPipeline();}
+function toggleF(el,v){document.querySelectorAll('.fc').forEach(c=>c.classList.remove('active'));el.classList.add('active');afil=v;renderPipeline();}
+
+// NOTIF
+function toggleNotif(){document.getElementById('np').classList.toggle('open');}
+function clearN(){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('unread'));document.getElementById('nc').style.display='none';document.getElementById('np').classList.remove('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.nb')&&!e.target.closest('.np'))document.getElementById('np').classList.remove('open');});
+
+// SIDEBAR
+function toggleSB(){document.getElementById('sidebar').classList.toggle('col');}
+
+// PAGES
+const bcs={pipeline:'GTM Engine › <span>Workspace</span> › <strong>Pipeline</strong>',nba:'GTM Engine › <span>Workspace</span> › <strong>Deal Intelligence</strong>',kpi:'GTM Engine › <span>Workspace</span> › <strong>Impact Dashboard</strong>',alerts:'GTM Engine › <span>Signals</span> › <strong>CDH Alerts</strong>'};
+function showPage(n){
+  ['pipeline','nba','kpi','alerts'].forEach(p=>document.getElementById('page-'+p).classList.toggle('on',p===n));
+  document.querySelectorAll('.sbi').forEach((b,i)=>b.classList.toggle('on',['pipeline','nba','kpi','alerts'][i]===n));
+  document.getElementById('bc').innerHTML=bcs[n];
+  if(n==='kpi')setTimeout(buildCharts,50);
+}
+
+// CHARTS
+let chartsBuilt=false;
+function buildCharts(){
+  if(chartsBuilt)return;chartsBuilt=true;
+  const mo=['Oct','Nov','Dec','Jan','Feb','Mar'];
+  const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},elements:{point:{radius:0},line:{tension:0.4}}};
+  new Chart(document.getElementById('c1'),{type:'line',data:{labels:mo,datasets:[{data:[-5,-12,-18,-25,-31,-38],borderColor:'#00A88E',borderWidth:2,fill:true,backgroundColor:'rgba(0,168,142,0.08)'}]},options:base});
+  new Chart(document.getElementById('c2'),{type:'line',data:{labels:mo,datasets:[{data:[8,15,22,31,39,47],borderColor:'#1564C0',borderWidth:2,fill:true,backgroundColor:'rgba(21,100,192,0.08)'}]},options:base});
+  new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['CDH + Blueprint','Blueprint + CS','Platform + CDH','CDH + Process AI'],datasets:[{data:[4.8,3.1,5.2,2.4],backgroundColor:['#00A88E','#1564C0','#5C3FA0','#C97A00'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'right',labels:{font:{size:9},color:'#4A5568',boxWidth:10,padding:8}}},cutout:'62%'}});
+  new Chart(document.getElementById('c4'),{type:'bar',data:{labels:mo,datasets:[{data:[0.8,1.5,2.9,4.1,6.2,8.4],backgroundColor:'rgba(92,63,160,0.15)',borderColor:'#5C3FA0',borderWidth:1.5,borderRadius:4}]},options:{...base,scales:{x:{display:false},y:{display:false,min:0,max:10}}}});
+}
+
+// SYNC
+let secs=0;
+setInterval(()=>{secs++;const e=document.getElementById('sync-ts');if(e)e.textContent=secs<60?secs+'s ago':Math.floor(secs/60)+'m ago';},1000);
+
+// INIT
+renderNBA();selNBA(0);renderPipeline();
+</script>
